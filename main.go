@@ -89,12 +89,13 @@ func main() {
 			if intDigits == houseConfig.AccessNumber {
 				// Gather for the secret handler
 				ga := twiml.GatherAttr{
-					Action:  "/secret",
-					Method:  "GET",
-					Timeout: 15,
+					Action:    "/secret",
+					Method:    "GET",
+					Timeout:   15,
+					NumDigits: 4,
 				}
 				g := r.Gather(&ga)
-				g.Say("End it with a pound.", &twiml.SayAttr{
+				g.Say("Give it to me, baby.", &twiml.SayAttr{
 					Voice: "man",
 				})
 				r.ToXML(w)
@@ -145,6 +146,7 @@ func main() {
 			Voice: "woman",
 		})
 		r.Say("Didn't hear you, goodbye.", &twiml.SayAttr{})
+		r.Hangup()
 		r.ToXML(w)
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
