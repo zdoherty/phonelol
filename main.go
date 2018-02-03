@@ -61,6 +61,7 @@ func main() {
 				r.Say("Welcome.", &twiml.SayAttr{Voice: "woman"})
 				r.Play("", &twiml.PlayAttr{Digits: "9"})
 				r.Play(randomSound(), &twiml.PlayAttr{})
+				r.Hangup()
 				r.ToXML(w)
 				return
 			}
@@ -95,9 +96,11 @@ func main() {
 					NumDigits: 4,
 				}
 				g := r.Gather(&ga)
-				g.Say("Give it to me, baby.", &twiml.SayAttr{
+				g.Say("Give it to me baby.", &twiml.SayAttr{
 					Voice: "man",
 				})
+				r.Say("Didn't hear you, goodbye.", &twiml.SayAttr{})
+				r.Hangup()
 				r.ToXML(w)
 				return
 			}
@@ -119,6 +122,7 @@ func main() {
 			d := r.Dial(&twiml.DialAttr{})
 			d.Number(houseConfig.Roommates[intDigits].Phone, &twiml.NumberAttr{})
 			r.Say("Goodbye.", &twiml.SayAttr{})
+			r.Hangup()
 			r.ToXML(w)
 			return
 		}
@@ -138,7 +142,7 @@ func main() {
 		ga := twiml.GatherAttr{
 			Action:    "/sort",
 			Method:    "GET",
-			Timeout:   10,
+			Timeout:   15,
 			NumDigits: 1,
 		}
 		g := r.Gather(&ga)
